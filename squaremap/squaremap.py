@@ -120,7 +120,7 @@ class SquareMap( wx.Panel ):
         self.highlight = highlight
         self.selectedNode = None
         self.highlightedNode = None
-        self._buffer = wx.EmptyBitmap(20, 20) # Have a default buffer ready
+        self._buffer = wx.Bitmap(20, 20) # Have a default buffer ready
         self.Bind( wx.EVT_PAINT, self.OnPaint)
         self.Bind( wx.EVT_SIZE, self.OnSize )
         if highlight:
@@ -216,7 +216,7 @@ class SquareMap( wx.Panel ):
         # the same size as the Window.
         if event is None:
             return 0,0
-        width, height = self.GetClientSizeTuple()
+        width, height = self.GetClientSize()
         if width <= 0 or height <=0:
             return 0,0
         # Make new off-screen bitmap: this bitmap will always have the
@@ -224,7 +224,7 @@ class SquareMap( wx.Panel ):
         # a file, or whatever.
         if width and height:
             # Macs can generate events with 0-size values
-            self._buffer = wx.EmptyBitmap(width, height)
+            self._buffer = wx.Bitmap(width, height)
             self.UpdateDrawing()
 
     def UpdateDrawing(self):
@@ -234,7 +234,7 @@ class SquareMap( wx.Panel ):
     def Draw(self, dc):
         ''' Draw the tree map on the device context. '''
         self.hot_map = []
-        dc.BeginDrawing()
+        #dc.BeginDrawing()
         brush = wx.Brush( self.BackgroundColour  )
         dc.SetBackground( brush )
         dc.Clear()
@@ -245,11 +245,11 @@ class SquareMap( wx.Panel ):
             self._em_size_ = dc.GetFullTextExtent( 'm', font )[0]
             w, h = dc.GetSize()
             self.DrawBox( dc, self.model, 0,0,w,h, hot_map = self.hot_map )
-        dc.EndDrawing()
+        #dc.EndDrawing()
 
     def FontForLabels(self, dc):
         ''' Return the default GUI font, scaled for printing if necessary. '''
-        font = wx.SystemSettings_GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         scale = dc.GetPPI()[0] / wx.ScreenDC().GetPPI()[0]
         font.SetPointSize(scale*font.GetPointSize())
         return font
@@ -257,7 +257,7 @@ class SquareMap( wx.Panel ):
     def BrushForNode( self, node, depth=0 ):
         """Create brush to use to display the given node"""
         if node == self.selectedNode:
-            colour = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHT)
+            colour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT)
         elif node == self.highlightedNode:
             colour = wx.Colour( red=0, green=255, blue=0 )
         else:
@@ -279,11 +279,11 @@ class SquareMap( wx.Panel ):
         """Determine the text foreground colour to use to display the label of
            the given node"""
         if node == self.selectedNode:
-            fg_colour = wx.SystemSettings_GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
+            fg_colour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT)
         else:
             fg_colour = self.adapter.foreground_color(node, depth)
             if not fg_colour:
-                fg_colour = wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOWTEXT)
+                fg_colour = wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOWTEXT)
         return fg_colour
 
     def DrawBox( self, dc, node, x,y,w,h, hot_map, depth=0 ):

@@ -8,7 +8,7 @@ to install the package from the source archive.
 import os
 try:
     from setuptools import setup
-except ImportError, err:
+except ImportError as err:
     from distutils.core import setup
 
 version = [
@@ -26,13 +26,13 @@ if __name__ == "__main__":
 			"""Intended Audience :: Developers""",
 		],
 		'keywords': 'wxPython,squaremap',
-		'long_description' : """Hierarchic visualization control for wxPython 
+		'long_description' : """Hierarchic visualization control for wxPython
 
-Hierarchic data visualization control intended for use with 
+Hierarchic data visualization control intended for use with
 structures where "parents" hold collections of weighted children.
 
 Can be used for viewing sizes of directories on file-systems,
-running-time of functions in profiling, or time spent on tasks 
+running-time of functions in profiling, or time spent on tasks
 in a time-tracking application.""",
 		'platforms': ['Any'],
 	}
@@ -57,4 +57,3 @@ in a time-tracking application.""",
 		zip_safe=False,
 		**extraArguments
 	)
-
